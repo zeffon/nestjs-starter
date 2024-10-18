@@ -4,17 +4,20 @@ import {
   CaslHandlerType,
   CHECK_POLICIES_KEY,
   PolicyHandlerCallback,
-} from '@/common/decorators/casl.decorator'
-import { CaslAbilityService } from '@/modules/auth/casl-ability.service'
+} from '../../common/decorators/casl.decorator'
+import { CaslAbilityService } from '../../modules/auth/casl-ability.service'
 
 @Injectable()
 export default class CaslGuard implements CanActivate {
-  constructor(private reflector: Reflector, private caslAbilityService: CaslAbilityService) {}
+  constructor(
+    private reflector: Reflector,
+    private caslAbilityService: CaslAbilityService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const handlers = this.reflector.getAllAndMerge<PolicyHandlerCallback[]>(
       CHECK_POLICIES_KEY.HANDLER,
-      [context.getHandler(), context.getClass()]
+      [context.getHandler(), context.getClass()],
     )
     const canHandlers = this.reflector.getAllAndMerge<any[]>(CHECK_POLICIES_KEY.CAN, [
       context.getHandler(),

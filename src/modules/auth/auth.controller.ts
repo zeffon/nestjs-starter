@@ -1,8 +1,8 @@
 import { NotFoundException } from '@nestjs/common'
-import { ExceptionCode } from '@/common/exception'
+import { ExceptionCode } from '../../common/exception'
 import { Controller, Post, Body } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import { LoginTypeEnum } from '@/shared/enum/user.enum'
+import { LoginTypeEnum } from '../../shared/enum/user.enum'
 import { AuthService } from './auth.service'
 import { AuthDto } from './dto/auth.dto'
 

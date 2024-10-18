@@ -1,4 +1,4 @@
-import { PageBaseDto } from '@/shared/helper/page.helper'
+import { PageBaseDto } from '../../../shared/helper/page.helper'
 import { ApiProperty } from '@nestjs/swagger'
 import { IsOptional } from 'class-validator'
 

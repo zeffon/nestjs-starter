@@ -1,6 +1,6 @@
 import { SetMetadata } from '@nestjs/common'
 import { AnyMongoAbility, InferSubjects } from '@casl/ability'
-import { Action } from '@/shared/enum/action.enum'
+import { Action } from '../../shared/enum/action.enum'
 
 export enum CHECK_POLICIES_KEY {
   HANDLER = 'CHECK_POLICIES_HANDLER',
@@ -21,11 +21,11 @@ export const CheckPolices = (...handlers: PolicyHandlerCallback[]) =>
 // @Can -> Action, Subject, Conditions
 export const Can = (action: Action, subject: InferSubjects<any>, conditions?: any) =>
   SetMetadata(CHECK_POLICIES_KEY.CAN, (ability: AnyMongoAbility) =>
-    ability.can(action, subject, conditions)
+    ability.can(action, subject, conditions),
   )
 
 // @Cannot -> Action, Subject, Conditions
 export const Cannot = (action: Action, subject: InferSubjects<any>, conditions?: any) =>
   SetMetadata(CHECK_POLICIES_KEY.CANNOT, (ability: AnyMongoAbility) =>
-    ability.cannot(action, subject, conditions)
+    ability.cannot(action, subject, conditions),
   )

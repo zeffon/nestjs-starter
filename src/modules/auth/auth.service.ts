@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { ExceptionCode } from '@/common/exception'
+import { ExceptionCode } from '../../common/exception'
 import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
 import { HttpService } from '@nestjs/axios'
-import { ConfigEnum } from '@/shared/enum/config.enum'
-import { UsersService } from '@/modules/users/users.service'
+import { ConfigEnum } from '../../shared/enum/config.enum'
+import { UsersService } from '../../modules/users/users.service'
 import { AuthDto } from './dto/auth.dto'
 import { UsersEntity } from '../users/entities/users.entity'
 import { firstValueFrom } from 'rxjs'
@@ -15,7 +15,7 @@ export class AuthService {
     private jwt: JwtService,
     private configService: ConfigService,
     private httpService: HttpService,
-    private usersService: UsersService
+    private usersService: UsersService,
   ) {}
 
   async userLogin(authDto: AuthDto) {

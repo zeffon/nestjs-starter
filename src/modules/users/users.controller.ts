@@ -10,7 +10,7 @@ import {
   Request,
 } from '@nestjs/common'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { JwtGuard } from '@/common/guards'
+import { JwtGuard } from '../../common/guards'
 import { PageUserDto } from './dto/get-user.dto'
 import { ApiTags } from '@nestjs/swagger'
 import { UsersService } from './users.service'

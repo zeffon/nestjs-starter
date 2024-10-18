@@ -3,15 +3,15 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UsersEntity } from './entities/users.entity'
-import { ExceptionCode } from '@/common/exception'
+import { ExceptionCode } from '../../common/exception'
 import { PageUserDto } from './dto/get-user.dto'
-import { conditionFilterBuilder } from '@/shared/helper/db.helper'
-import { Paging } from '@/shared/helper/page.helper'
+import { conditionFilterBuilder } from '../../shared/helper/db.helper'
+import { Paging } from '../../shared/helper/page.helper'
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(UsersEntity) private readonly usersRepository: Repository<UsersEntity>
+    @InjectRepository(UsersEntity) private readonly usersRepository: Repository<UsersEntity>,
   ) {}
 
   async create(user: Partial<UsersEntity>) {

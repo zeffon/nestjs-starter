@@ -5,7 +5,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 import { Exclude } from 'class-transformer'
-import { dateTransformer } from '@/shared/transformers/date.transformer'
+import { dateTransformer } from '../../shared/transformers/date.transformer'
 
 export class BaseEntity {
   @PrimaryGeneratedColumn()

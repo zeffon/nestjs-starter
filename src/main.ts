@@ -1,8 +1,8 @@
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory, Reflector } from '@nestjs/core'
-import { AppModule } from '@/app.module'
-import { HttpExceptionFilter } from '@/common/exception'
+import { AppModule } from './app.module'
+import { HttpExceptionFilter } from './common/exception'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 
 async function bootstrap() {
