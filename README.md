@@ -37,6 +37,8 @@ $ pnpm run start:prod
 ...
 
 ### Use Vercel
+> Tip: if you use Vercel deploy nestjs, you can't use `path alias` and only use `relative path`.
+
 To set environment variables in Vercel project settings:
 
 1. Log in to the Vercel platform and navigate to your project's dashboard.
