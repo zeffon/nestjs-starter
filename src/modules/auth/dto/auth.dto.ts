@@ -17,7 +17,7 @@ export class AuthDto {
   })
   password: string
 
-  @ApiProperty({ type: 'number' })
+  @ApiProperty({ type: 'number', default: 1 })
   @IsNumber()
-  type = 0
+  type: number
 }

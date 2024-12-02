@@ -20,7 +20,7 @@ import { UsersModule } from '../../modules/users/users.module'
       useFactory: async (configService: ConfigService) => {
         return {
           secret: configService.get<string>(ConfigEnum.SECRET),
-          signOptions: configService.get(ConfigEnum.EXPIRES_IN),
+          signOptions: { expiresIn: configService.get(ConfigEnum.EXPIRES_IN) },
         }
       },
       inject: [ConfigService],

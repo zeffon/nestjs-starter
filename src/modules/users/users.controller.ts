@@ -17,6 +17,7 @@ import { UsersService } from './users.service'
 
 @ApiTags('users')
 @Controller('users')
+@ApiBearerAuth()
 @UseGuards(JwtGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
