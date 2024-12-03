@@ -12,8 +12,9 @@ import {
 import { UpdateUserDto } from './dto/update-user.dto'
 import { JwtGuard } from '../../common/guards'
 import { PageUserDto } from './dto/get-user.dto'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { UsersService } from './users.service'
+import { GetUid } from '../../common/decorators/params.decorator'
 
 @ApiTags('users')
 @Controller('users')
@@ -33,9 +34,8 @@ export class UsersController {
   }
 
   @Get('me')
-  findMe(@Request() request) {
-    const id = request.user.id
-    return this.usersService.findOne(+id)
+  findMe(@GetUid() uid: number) {
+    return this.usersService.findOne(uid)
   }
 
   @Get(':id')

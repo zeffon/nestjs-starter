@@ -21,10 +21,8 @@ export class AuthService {
   async userLogin(authDto: AuthDto) {
     // TODO
     console.log(authDto)
-    return await this.jwt.signAsync({
-      username: 'user.username',
-      sub: 'user.id',
-    })
+    const uid = 1
+    return await this.generateToken(uid)
   }
 
   async code2Session(authDto: AuthDto) {
@@ -44,7 +42,7 @@ export class AuthService {
     }
     const user = await this.usersService.findOneByOpenid(openid)
     if (user) {
-      return this.generateToken(user)
+      return this.generateToken(user.id)
     }
     const avatarUrl = `https://cdn.zeffon.cn/nickname/avatar/default-${
       Math.floor(Math.random() * 5) + 1
@@ -55,13 +53,12 @@ export class AuthService {
       nickname,
       avatarUrl,
     })
-    return this.generateToken(newUser)
+    return this.generateToken(newUser.id)
   }
 
-  async generateToken(user: UsersEntity) {
+  async generateToken(uid: number) {
     return await this.jwt.signAsync({
-      username: user.openid,
-      sub: user.id,
+      uid,
     })
   }
 }
