@@ -6,17 +6,18 @@ import { LoginTypeEnum } from '../../shared/enum/user.enum'
 import { AuthService } from './auth.service'
 import { AuthDto } from './dto/auth.dto'
 import { JwtGuard } from '../../common/guards'
+import { GetUid } from 'src/common/decorators/params.decorator'
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Get('/token/verify')
+  @Get('/token/refrsh')
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
-  async verifyToken() {
-    return true
+  async verifyToken(@GetUid() uid: number) {
+    return await this.authService.generateToken(uid)
   }
 
   @Post('/token')
