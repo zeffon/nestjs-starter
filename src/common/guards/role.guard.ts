@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
-import { UsersService } from '../../modules/users/users.service'
+import { UserService } from '../../modules/user/user.service'
 import { RoleCode } from '../../shared/enum/role.enum'
 import { SetMetadata } from '@nestjs/common'
 
@@ -9,7 +9,7 @@ export const ROLES_KEY = 'role_codes'
 export default class RoleGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    private usersService: UsersService,
+    private usersService: UserService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -22,6 +22,7 @@ export default class RoleGuard implements CanActivate {
     }
     const req = context.switchToHttp().getRequest()
     const username = req.user.username
+    // TODO: Your Business Logic
 
     return !username
   }

@@ -13,43 +13,43 @@ import { UpdateUserDto } from './dto/update-user.dto'
 import { JwtGuard } from '../../common/guards'
 import { PageUserDto } from './dto/get-user.dto'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { UsersService } from './users.service'
+import { UserService } from './user.service'
 import { GetUid } from '../../common/decorators/params.decorator'
 
-@ApiTags('users')
-@Controller('users')
+@ApiTags('user')
+@Controller('user')
 @ApiBearerAuth()
 @UseGuards(JwtGuard)
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
   @Get()
   findAll() {
-    return this.usersService.findAll()
+    return this.userService.findAll()
   }
 
   @Get('page')
   findPage(@Query() query: PageUserDto) {
-    return this.usersService.findPage(query)
+    return this.userService.findPage(query)
   }
 
   @Get('me')
   findMe(@GetUid() uid: number) {
-    return this.usersService.findOne(uid)
+    return this.userService.findOne(uid)
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id)
+    return this.userService.findOne(+id)
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto)
+    return this.userService.update(+id, updateUserDto)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.usersService.remove(+id)
+    return this.userService.remove(+id)
   }
 }

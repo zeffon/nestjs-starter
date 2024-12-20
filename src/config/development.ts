@@ -14,6 +14,11 @@ const development = {
     DATABASE: 'nestjs',
     TIMEZONE: '+08:00',
   },
+  WX: {
+    APP_ID: 'wxxxxxxxxxxxxxxxxx',
+    APP_SECRET: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+    SESSION_URL: 'https://api.weixin.qq.com/sns/jscode2session',
+  },
 }
 
 export default development

@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
-import { UsersService } from '../../modules/users/users.service'
+import { UserService } from '../../modules/user/user.service'
 
 @Injectable()
 export default class AdminGuard implements CanActivate {
@@ -9,7 +9,7 @@ export default class AdminGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest()
     const username = req.user.username
-
+    // TODO: Your Business Logic
     return !username
   }
 }

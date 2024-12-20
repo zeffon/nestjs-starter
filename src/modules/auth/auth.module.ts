@@ -8,12 +8,12 @@ import { JwtStrategy } from './auth.strategy'
 import { AuthService } from './auth.service'
 import { CaslAbilityService } from './casl-ability.service'
 import { HttpModule } from '@nestjs/axios'
-import { UsersModule } from '../../modules/users/users.module'
+import { UserModule } from '../user/user.module'
 
 @Module({
   imports: [
     HttpModule,
-    UsersModule,
+    UserModule,
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],

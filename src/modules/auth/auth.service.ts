@@ -4,9 +4,8 @@ import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
 import { HttpService } from '@nestjs/axios'
 import { ConfigEnum } from '../../shared/enum/config.enum'
-import { UsersService } from '../../modules/users/users.service'
+import { UserService } from '../user/user.service'
 import { AuthDto } from './dto/auth.dto'
-import { UsersEntity } from '../users/entities/users.entity'
 import { firstValueFrom } from 'rxjs'
 
 @Injectable()
@@ -15,7 +14,7 @@ export class AuthService {
     private jwt: JwtService,
     private configService: ConfigService,
     private httpService: HttpService,
-    private usersService: UsersService,
+    private userService: UserService,
   ) {}
 
   async userLogin(authDto: AuthDto) {
@@ -40,18 +39,13 @@ export class AuthService {
     if (openid == null || openid === undefined) {
       throw new BadRequestException({ code: ExceptionCode.WX_INNER_LOGIN_FAIL })
     }
-    const user = await this.usersService.findOneByOpenid(openid)
+    const user = await this.userService.findOneByOpenid(openid)
     if (user) {
       return this.generateToken(user.id)
     }
-    const avatarUrl = `https://cdn.zeffon.cn/nickname/avatar/default-${
-      Math.floor(Math.random() * 5) + 1
-    }.png`
-    const nickname = '微信用户'
-    const newUser = await this.usersService.create({
+    const newUser = await this.userService.create({
       openid,
-      nickname,
-      avatarUrl,
+      nickname: 'nickname',
     })
     return this.generateToken(newUser.id)
   }

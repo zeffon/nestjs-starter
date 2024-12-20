@@ -1,8 +1,8 @@
 import { Entity, Column } from 'typeorm'
 import { BaseEntity } from '../../../common/constants/base.entity'
 
-@Entity({ name: 'users' })
-export class UsersEntity extends BaseEntity {
+@Entity({ name: 'user' })
+export class UserEntity extends BaseEntity {
   @Column({ length: 50 })
   openid: string
 

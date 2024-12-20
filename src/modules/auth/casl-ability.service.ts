@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { AbilityBuilder, createMongoAbility } from '@casl/ability'
-import { UsersService } from '../users/users.service'
+import { UserService } from '../user/user.service'
 
 @Injectable()
 export class CaslAbilityService {
-  constructor(private usersService: UsersService) {}
+  constructor(private userService: UserService) {}
 
   async forRoot(username: string) {
     const { can, build } = new AbilityBuilder(createMongoAbility)

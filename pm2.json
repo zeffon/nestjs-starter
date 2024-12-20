@@ -8,7 +8,7 @@
       "name": "nestjs-starter",
       "script": "/app/nestjs-starter/dist/main.js",
       "instances": 1,
-      "cwd": "/app/nestjs-startere",
+      "cwd": "/app/nestjs-starter",
       "error_file": "./logs/pm2/error.log",
       "out_file": "./logs/pm2/out.log",
       "log_date_format": "YYYY-MM-DD HH:mm:ss",
