@@ -1,4 +1,4 @@
-export const booleanTransformer = () => {
+export const BooleanTransformer = () => {
   return {
     to(value: boolean): number {
       return value ? 1 : 0
