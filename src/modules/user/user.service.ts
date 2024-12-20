@@ -14,8 +14,8 @@ export class UserService {
     @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async create(user: Partial<UserEntity>) {
-    const newOne = this.userRepository.create(user)
+  async create(one: Partial<UserEntity>) {
+    const newOne = this.userRepository.create(one)
     return await this.userRepository.save(newOne)
   }
 
