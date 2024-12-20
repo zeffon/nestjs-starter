@@ -5,7 +5,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 import { Exclude } from 'class-transformer'
-import { dateTransformer } from '../../shared/transformers/date.transformer'
+import { DateTransformer } from '../transformers/date.transformer'
 
 export class BaseEntity {
   @PrimaryGeneratedColumn()
@@ -14,7 +14,7 @@ export class BaseEntity {
   @CreateDateColumn({
     name: 'created_at',
     nullable: true,
-    transformer: dateTransformer(),
+    transformer: DateTransformer(),
   })
   @Exclude()
   createdAt: Date
@@ -22,7 +22,7 @@ export class BaseEntity {
   @UpdateDateColumn({
     name: 'updated_at',
     nullable: true,
-    transformer: dateTransformer(),
+    transformer: DateTransformer(),
   })
   @Exclude()
   updatedAt: Date
@@ -30,7 +30,7 @@ export class BaseEntity {
   @DeleteDateColumn({
     name: 'deleted_at',
     nullable: true,
-    transformer: dateTransformer(),
+    transformer: DateTransformer(),
   })
   @Exclude()
   deletedAt: Date
