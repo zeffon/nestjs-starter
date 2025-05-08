@@ -1,11 +1,9 @@
 import { InjectRepository } from '@nestjs/typeorm'
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { Repository } from 'typeorm'
-import { UpdateUserDto } from './dto/update-user.dto'
 import { UserEntity } from './entities/user.entity'
 import { ExceptionCode } from '../../common/exception'
-import { PageUserDto } from './dto/get-user.dto'
-import { conditionFilterBuilder } from '../../shared/helper/db.helper'
+import { PageUserDto, UpdateUserDto } from './dto'
 import { Paging } from '../../shared/helper/page.helper'
 
 @Injectable()
@@ -25,17 +23,15 @@ export class UserService {
 
   async findPage(query: PageUserDto) {
     const { page, limit, nickname } = query
-    const take = limit
-    const skip = (page - 1) * take
-    const obj = {
-      'user.nickname': nickname,
-    }
     const queryBuilder = this.userRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.roles', 'roles')
-    const newQuery = conditionFilterBuilder<UserEntity>(queryBuilder, obj)
-    const [result, total] = await newQuery.take(take).skip(skip).getManyAndCount()
-    return new Paging(result, total, page, take)
+    if (nickname) {
+      queryBuilder.where('user.nickname LIKE :nickname', { nickname: `%${nickname}%` })
+    }
+    queryBuilder.skip((page - 1) * limit).take(limit)
+    const [result, total] = await queryBuilder.getManyAndCount()
+    return new Paging(result, total, page, limit)
   }
 
   async findOne(id: number) {

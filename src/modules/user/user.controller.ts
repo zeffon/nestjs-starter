@@ -1,17 +1,6 @@
-import {
-  Controller,
-  Get,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-  Query,
-  Request,
-} from '@nestjs/common'
-import { UpdateUserDto } from './dto/update-user.dto'
+import { Controller, Get, Body, Put, Param, Delete, UseGuards, Query } from '@nestjs/common'
 import { JwtGuard } from '../../common/guards'
-import { PageUserDto } from './dto/get-user.dto'
+import { UpdateUserDto, PageUserDto } from './dto'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { UserService } from './user.service'
 import { GetUid } from '../../common/decorators/params.decorator'
@@ -43,7 +32,7 @@ export class UserController {
     return this.userService.findOne(+id)
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto)
   }
