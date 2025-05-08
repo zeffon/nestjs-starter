@@ -3,7 +3,7 @@ import { JwtGuard } from '../../common/guards'
 import { UpdateUserDto, PageUserDto } from './dto'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { UserService } from './user.service'
-import { GetUid } from '../../common/decorators/params.decorator'
+import { GetTokenUser } from '../../common/decorators/params.decorator'
 
 @ApiTags('user')
 @Controller('user')
@@ -23,8 +23,8 @@ export class UserController {
   }
 
   @Get('me')
-  findMe(@GetUid() uid: number) {
-    return this.userService.findOne(uid)
+  findMe(@GetTokenUser() user: { id: number }) {
+    return this.userService.findOne(user.id)
   }
 
   @Get(':id')

@@ -6,7 +6,7 @@ import { LoginTypeEnum } from '../../shared/enum/user.enum'
 import { AuthService } from './auth.service'
 import { AuthDto } from './dto/auth.dto'
 import { JwtGuard } from '../../common/guards'
-import { GetUid } from 'src/common/decorators/params.decorator'
+import { GetTokenUser } from 'src/common/decorators/params.decorator'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -16,8 +16,8 @@ export class AuthController {
   @Get('/token/refrsh')
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
-  async verifyToken(@GetUid() uid: number) {
-    return await this.authService.generateToken(uid)
+  async verifyToken(@GetTokenUser() user: { id: number }) {
+    return await this.authService.generateToken(user.id)
   }
 
   @Post('/token')

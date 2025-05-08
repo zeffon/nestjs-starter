@@ -7,6 +7,7 @@ import { ConfigEnum } from '../../shared/enum/config.enum'
 import { UserService } from '../user/user.service'
 import { AuthDto } from './dto/auth.dto'
 import { firstValueFrom } from 'rxjs'
+import { UserEntity } from '../user/entities/user.entity'
 
 @Injectable()
 export class AuthService {
@@ -21,7 +22,7 @@ export class AuthService {
     // TODO
     console.log(authDto)
     const uid = 1
-    return await this.generateToken(uid)
+    return await this.generateToken({ id: 1 } as UserEntity)
   }
 
   async code2Session(authDto: AuthDto) {
@@ -41,18 +42,19 @@ export class AuthService {
     }
     const user = await this.userService.findOneByOpenid(openid)
     if (user) {
-      return this.generateToken(user.id)
+      return this.generateToken(user)
     }
     const newUser = await this.userService.create({
       openid,
       nickname: 'nickname',
     })
-    return this.generateToken(newUser.id)
+    return this.generateToken(newUser)
   }
 
-  async generateToken(uid: number) {
+  async generateToken(user: UserEntity) {
+    const encryptInfo = { id: user.id, openid: user.openid }
     return await this.jwt.signAsync({
-      uid,
+      encryptInfo,
     })
   }
 }
