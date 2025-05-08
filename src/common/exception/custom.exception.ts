@@ -1,65 +1,63 @@
 import { HttpException, HttpExceptionOptions, HttpStatus } from '@nestjs/common'
+import { ExceptionCode } from './http-exception-code.enum'
 
-export class CreatedSuccessException extends HttpException {
-  constructor(
-    objectOrError?: string | object | any,
-    descriptionOrOptions?: string | HttpExceptionOptions
-  ) {
-    const { description, httpExceptionOptions } =
-      HttpException.extractDescriptionAndOptionsFrom(descriptionOrOptions)
-
-    super(
-      HttpException.createBody(objectOrError, description, HttpStatus.CREATED),
-      HttpStatus.CREATED,
-      httpExceptionOptions
-    )
-  }
+function ApiResponseBody<T>(
+  result: T,
+  errcode: number,
+  message: string,
+): { result: T; errcode: number; message: string } {
+  return { result, errcode, message }
 }
 
-export class GetSuccessException extends HttpException {
+/**
+ * Response Success, But it not parse Body Entity
+ */
+export class ResponseSuccessException extends HttpException {
   constructor(
-    objectOrError?: string | object | any,
-    descriptionOrOptions?: string | HttpExceptionOptions
+    objectOrError?: string | number | object | any,
+    descriptionOrOptions?: string | HttpExceptionOptions,
   ) {
     const { description, httpExceptionOptions } =
-      HttpException.extractDescriptionAndOptionsFrom(descriptionOrOptions)
-
-    super(
-      HttpException.createBody(objectOrError, description, HttpStatus.OK),
-      HttpStatus.OK,
-      httpExceptionOptions
+      ResponseSuccessException.parseDescriptionOrOptions(descriptionOrOptions)
+    const { result, errcode, message } = ResponseSuccessException.parseObjectOrError(
+      objectOrError,
+      description,
     )
+
+    const responseBody = ApiResponseBody(result, errcode, message)
+    super(responseBody, HttpStatus.OK, httpExceptionOptions)
   }
-}
 
-export class UpdatedSuccessException extends HttpException {
-  constructor(
-    objectOrError?: string | object | any,
-    descriptionOrOptions?: string | HttpExceptionOptions
-  ) {
-    const { description, httpExceptionOptions } =
-      HttpException.extractDescriptionAndOptionsFrom(descriptionOrOptions)
-
-    super(
-      HttpException.createBody(objectOrError, description, HttpStatus.OK),
-      HttpStatus.OK,
-      httpExceptionOptions
-    )
+  private static parseDescriptionOrOptions(descriptionOrOptions?: string | HttpExceptionOptions): {
+    description: string
+    httpExceptionOptions?: HttpExceptionOptions
+  } {
+    if (typeof descriptionOrOptions === 'string') {
+      return { description: descriptionOrOptions }
+    } else if (typeof descriptionOrOptions === 'object' && descriptionOrOptions !== null) {
+      return { description: '', httpExceptionOptions: descriptionOrOptions }
+    }
+    return { description: '' }
   }
-}
 
-export class DeletedSuccessException extends HttpException {
-  constructor(
-    objectOrError?: string | object | any,
-    descriptionOrOptions?: string | HttpExceptionOptions
-  ) {
-    const { description, httpExceptionOptions } =
-      HttpException.extractDescriptionAndOptionsFrom(descriptionOrOptions)
+  private static parseObjectOrError(
+    objectOrError?: string | number | object | any,
+    defaultMessage: string = '',
+  ): { result: any; errcode: number; message: string } {
+    let result: any = null
+    let errcode: number = ExceptionCode.OK
+    let message: string = defaultMessage
 
-    super(
-      HttpException.createBody(objectOrError, description, HttpStatus.OK),
-      HttpStatus.OK,
-      httpExceptionOptions
-    )
+    if (typeof objectOrError === 'object' && objectOrError !== null) {
+      result = objectOrError.data ?? result
+      errcode = objectOrError.errcode ?? errcode
+      message = objectOrError.message ?? message
+    } else if (typeof objectOrError === 'string') {
+      message = objectOrError
+    } else if (typeof objectOrError === 'number') {
+      errcode = objectOrError
+    }
+
+    return { result, errcode, message }
   }
 }

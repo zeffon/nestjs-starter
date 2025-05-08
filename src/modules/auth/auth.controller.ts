@@ -31,7 +31,7 @@ export class AuthController {
         token = await this.authService.userLogin(authDto)
         break
       default:
-        throw new NotFoundException({ code: ExceptionCode.USER_LOGIN_TYPE_NOT_FOUND })
+        throw new NotFoundException({ errcode: ExceptionCode.USER_LOGIN_TYPE_NOT_FOUND })
     }
     return token
   }

@@ -3,11 +3,11 @@ import { Request, Response } from 'express'
 import CODE from './http-exception-code'
 import { ExceptionCode } from './http-exception-code.enum'
 
-interface ExceptionResponseProps {
-  code?: number
+interface ResponseExceptionProps {
   message?: string | string[]
   error?: string
-  statusCode?: number
+  errcode?: number
+  result?: any
 }
 
 @Catch(HttpException)
@@ -18,43 +18,45 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>()
     const status = exception.getStatus()
 
-    const [statusCode, message] = makeCodeAndMessage(exception)
+    const { errcode, message, result } = makeCodeAndMessage(exception)
 
     response.status(status).json({
-      statusCode,
+      errcode,
       message,
+      result,
       request: `${request.method} ${request.path}`,
     })
   }
 }
 
 const makeCodeAndMessage = (exception: HttpException) => {
-  const exceptionResponse = exception.getResponse() as ExceptionResponseProps
-  let statusCode = exceptionResponse.code || ExceptionCode.NOT_FOUND_CODE
+  const exceptionResponse = exception.getResponse() as ResponseExceptionProps
+  let errcode = exceptionResponse.errcode || ExceptionCode.NOT_FOUND_CODE
 
   let message: string | string[] = exception.message || exception.name
   if (exceptionResponse.message) {
     message = exceptionResponse.message
-  } else if (statusCode) {
-    message = CODE.get(+statusCode) || message
+  } else if (errcode) {
+    message = CODE.get(+errcode) || message
   }
 
-  if (exceptionResponse.statusCode) {
-    if (exceptionResponse.statusCode === 400) {
-      statusCode = ExceptionCode.BAD_REQUEST
-    } else if (exceptionResponse.statusCode === 401) {
-      statusCode = ExceptionCode.UNAUTHORIZED
-      message = CODE.get(+statusCode) || message
-    } else if (exceptionResponse.statusCode === 403) {
-      statusCode = ExceptionCode.FORBIDDEN
-      message = CODE.get(+statusCode) || message
-    } else if (exceptionResponse.statusCode === 404) {
-      statusCode = ExceptionCode.NOT_FOUND
-      message = CODE.get(+statusCode) || message
-    } else if (exceptionResponse.statusCode === 500) {
-      statusCode = ExceptionCode.UNKNOWN_ERROR
+  if (exceptionResponse.errcode) {
+    if (exceptionResponse.errcode === 400) {
+      errcode = ExceptionCode.BAD_REQUEST
+    } else if (exceptionResponse.errcode === 401) {
+      errcode = ExceptionCode.UNAUTHORIZED
+      message = CODE.get(+errcode) || message
+    } else if (exceptionResponse.errcode === 403) {
+      errcode = ExceptionCode.FORBIDDEN
+      message = CODE.get(+errcode) || message
+    } else if (exceptionResponse.errcode === 404) {
+      errcode = ExceptionCode.NOT_FOUND
+      message = CODE.get(+errcode) || message
+    } else if (exceptionResponse.errcode === 500) {
+      errcode = ExceptionCode.UNKNOWN_ERROR
     }
   }
 
-  return [statusCode, message]
+  const result = exceptionResponse.result || null
+  return { errcode, message, result }
 }

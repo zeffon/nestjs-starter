@@ -30,14 +30,14 @@ export class AuthService {
 
     const { data } = await firstValueFrom(this.httpService.get(formatUrl))
     if (data.errcode && data.errcode !== 1) {
-      throw new BadRequestException({ code: ExceptionCode.WX_INNER_LOGIN_FAIL })
+      throw new BadRequestException({ errcode: ExceptionCode.WX_INNER_LOGIN_FAIL })
     }
     return this.openid2User(data.openid)
   }
 
   async openid2User(openid: string) {
     if (openid == null || openid === undefined) {
-      throw new BadRequestException({ code: ExceptionCode.WX_INNER_LOGIN_FAIL })
+      throw new BadRequestException({ errcode: ExceptionCode.WX_INNER_LOGIN_FAIL })
     }
     const user = await this.userService.findOneByOpenid(openid)
     if (user) {
