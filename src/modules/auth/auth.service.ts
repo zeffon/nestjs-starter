@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { ExceptionCode } from '../../common/exception'
-import { JwtService } from '@nestjs/jwt'
+import { JwtService, TokenExpiredError } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
 import { HttpService } from '@nestjs/axios'
 import { ConfigEnum } from '../../shared/enum/config.enum'
@@ -56,5 +56,19 @@ export class AuthService {
     return await this.jwt.signAsync({
       encryptInfo,
     })
+  }
+
+  async verifyToken(token: string) {
+    try {
+      const valid = await this.jwt.verifyAsync(token)
+      if (!valid) {
+        throw new BadRequestException({ errcode: ExceptionCode.TOKEN_INVALID })
+      }
+    } catch (error) {
+      if (error instanceof TokenExpiredError) {
+        throw new BadRequestException({ errcode: ExceptionCode.TOKEN_INVALID })
+      }
+      throw new BadRequestException({ errcode: ExceptionCode.TOKEN_INVALID })
+    }
   }
 }

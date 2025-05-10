@@ -1,12 +1,10 @@
-import { NotFoundException, UseGuards } from '@nestjs/common'
+import { NotFoundException } from '@nestjs/common'
 import { ExceptionCode } from '../../common/exception'
-import { Controller, Post, Get, Body } from '@nestjs/common'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { Controller, Post, Get, Body, Query } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
 import { LoginTypeEnum } from '../../shared/enum/user.enum'
 import { AuthService } from './auth.service'
 import { AuthDto } from './dto/auth.dto'
-import { JwtGuard } from '../../common/guards'
-import { GetTokenUser } from 'src/common/decorators/params.decorator'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -14,10 +12,8 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Get('/token/refrsh')
-  @UseGuards(JwtGuard)
-  @ApiBearerAuth()
-  async verifyToken(@GetTokenUser() user: { id: number }) {
-    return await this.authService.generateToken(user.id)
+  verifyToken(@Query('token') token: string) {
+    this.authService.verifyToken(token)
   }
 
   @Post('/token')
