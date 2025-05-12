@@ -2,7 +2,7 @@
  * Custom HTTP exception error code
  * [errorCode, 'errorCode message']
  */
-const CODE = new Map([
+const CODE_DICT = new Map([
   [1, 'ok'],
   [999, '未知错误码'],
 
@@ -24,4 +24,4 @@ const CODE = new Map([
   [20006, '微信内部登录失败'],
 ])
 
-export default CODE
+export default CODE_DICT

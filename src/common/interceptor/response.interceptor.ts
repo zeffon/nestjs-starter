@@ -1,6 +1,6 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common'
 import { map } from 'rxjs/operators'
-import { ExceptionCode, CODE } from '../exception'
+import { ExceptionCode, CODE_DICT } from '../exception'
 
 @Injectable()
 export class SuccessResponseInterceptor implements NestInterceptor {
@@ -15,7 +15,7 @@ export class SuccessResponseInterceptor implements NestInterceptor {
         }
 
         const errcode = meta?.errcode ?? ExceptionCode.OK
-        const message = meta?.message ?? CODE.get(errcode) ?? ''
+        const message = meta?.message ?? CODE_DICT.get(errcode) ?? ''
 
         return { result, errcode, message }
       }),
@@ -40,7 +40,7 @@ export interface BuildSuccessResponseProps {
  */
 export const buildSuccessResponse = (options?: BuildSuccessResponseProps) => {
   const { data = null, errcode = ExceptionCode.OK, message } = options || {}
-  const statusMessage = message !== undefined ? message : (CODE.get(errcode) ?? '')
+  const statusMessage = message !== undefined ? message : (CODE_DICT.get(errcode) ?? '')
   return {
     data,
     __meta__: {

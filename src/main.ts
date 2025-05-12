@@ -2,7 +2,7 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory, Reflector } from '@nestjs/core'
 import { AppModule } from './app.module'
-import { HttpExceptionFilter } from './common/exception'
+import { GlobalExceptionFilter } from './common/exception'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { SuccessResponseInterceptor } from './common/interceptor'
 
@@ -18,7 +18,7 @@ async function bootstrap() {
     }),
   )
 
-  app.useGlobalFilters(new HttpExceptionFilter())
+  app.useGlobalFilters(new GlobalExceptionFilter())
   app.useGlobalInterceptors(
     new ClassSerializerInterceptor(app.get(Reflector)),
     new SuccessResponseInterceptor(),
