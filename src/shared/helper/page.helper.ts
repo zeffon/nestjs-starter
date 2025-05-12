@@ -25,12 +25,12 @@ export class Paging<T> {
   limit = DEFAULT_LIMIT
   total = 0
   pageTotal = 0
-  items: T[] = []
-  constructor(items: T[], total: number, page: number, limit: number) {
+  records: T[] = []
+  constructor(records: T[], total: number, page: number, limit: number) {
     this.page = page
     this.limit = limit
     this.total = total
     this.pageTotal = Math.ceil(total / limit)
-    this.items = items
+    this.records = records
   }
 }

@@ -1,5 +1,5 @@
 export enum ConfigEnum {
-  SECRET = 'SECRET.JWT_KEY',
-  EXPIRES_IN = 'SECRET.EXPIRES_IN',
-  WX_CONFIG = 'WX',
+  Secret = 'SECRET.JWT_KEY',
+  ExpiresIn = 'SECRET.EXPIRES_IN',
+  WechatConfig = 'WX',
 }

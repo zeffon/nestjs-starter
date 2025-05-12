@@ -19,8 +19,8 @@ import { UserModule } from '../user/user.module'
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
         return {
-          secret: configService.get<string>(ConfigEnum.SECRET),
-          signOptions: { expiresIn: configService.get(ConfigEnum.EXPIRES_IN) },
+          secret: configService.get<string>(ConfigEnum.Secret),
+          signOptions: { expiresIn: configService.get(ConfigEnum.ExpiresIn) },
         }
       },
       inject: [ConfigService],
